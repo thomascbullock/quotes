@@ -10,9 +10,10 @@ import static org.junit.Assert.*;
 public class AppTest {
 
     private App testQuoteApp;
-    private Quote[] quotes = testQuoteApp.readFile();
+    private Quote[] quotes;
     @Before public void setup(){
-        App testQuoteApp = new App();
+        testQuoteApp = new App();
+        quotes = testQuoteApp.readFile();
     }
 
     @Test public void testReadFile(){
