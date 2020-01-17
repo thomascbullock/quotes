@@ -5,14 +5,15 @@ package quotes;
 
 import com.google.gson.Gson;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class App {
 
     public static void main(String[] args) {
-        System.out.println(randomQuote(readFile()));
+        webRequest();
     }
 
     public static Quote[] readFile() {
@@ -37,6 +38,30 @@ public class App {
         return quotes[(int)(Math.random()*quotes.length)].quoteAndAuthorString();
     }
 
+    public static void webRequest(){
+        URL url = null;
+        try {
+            url = new URL("http://swquotesapi.digitaljedi.dk/api/SWQuote/RandomStarWarsQuote");
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        HttpURLConnection con = null;
+        try {
+            con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("GET");
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(con.getInputStream()));
+            String inputLine;
+            StringBuffer content = new StringBuffer();
+            while ((inputLine = in.readLine()) != null) {
+                content.append(inputLine);
+            }
+            in.close();
+            System.out.println(content.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
+    }
 
 }
